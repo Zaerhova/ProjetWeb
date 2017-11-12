@@ -1,0 +1,44 @@
+{% block contenu %}
+
+    <h1>Projet 2 web : site de vente Espace Client</h1>
+    
+    <div class="row">
+        <div class="small-7 large-7 columns">
+            <table>
+                <caption>Produits</caption>
+                <thread>
+                    <tr><th>nom</th><th>id</th><th>type</th><th>prix</th><th>photo</th><th>ajouter</th>
+                    </tr>
+                </thread>
+                <tbody>
+                    {% for produit in dataProduit if dataProduit is not empty %}
+                        <tr>
+                            <td>{{ produit.nom }}</td><td>{{ produit.id }}</td><td>{{ produit.libelle }}</td><td>{{ produit.prix }}</td>
+                            <td><img src="{{ asset('images/')}}{{ produit.photo }}" alt="image de {{ produit.libelle }}" style="width:40px;height: 40px;"></td>
+                            <td>
+                                <form action="{{ path('panier.add',{id:produit.id}) }}" method="post">
+                                    <input type="hidden" name="produit_id" value="{{ produit.id }}">
+                                    <input type="image" style="width:40px;height:40px" src="{{ asset('images/ajoutPanier.jpeg') }}" alt="ajout Panier">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table>
+                <caption>Paniers</caption>
+                <thread>
+                    <tr><th>quantite</th><th>prix</th><th>dateAjoutPanier</th>
+                    </tr>
+                </thread>
+                <tbody>
+                    {% for panier in dataPanier if dataPanier is not empty %}
+                        <tr>
+                            <td>{{ panier.quantite }}</td><td>{{ panier.quanite }}</td><td>{{ panier.dateAjoutPanier }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
