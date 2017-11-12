@@ -10,7 +10,6 @@ class IndexController implements ControllerProviderInterface
     public function index(Application $app)
     {
         if ($app['session']->get('roles') == 'ROLE_CLIENT')
-
           return $app->redirect($app["url_generator"]->generate("panier.index"));
         if ($app['session']->get('roles') == 'ROLE_ADMIN')
             return $app["twig"]->render("backOff/backOFFICE.html.twig");

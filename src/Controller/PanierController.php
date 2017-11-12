@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Model\CommandeModel;
+use App\Model\UserModel;
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
 
@@ -22,6 +24,8 @@ class PanierController implements ControllerProviderInterface
 
     private $panierModel;
     private $produitModel;
+    private $userModel;
+    private $commandeModel;
 
     public function index(Application $app) {
         return $this->showPanier($app);
@@ -32,6 +36,23 @@ class PanierController implements ControllerProviderInterface
         $this->produitModel = new ProduitModel($app);
         $paniers = $this->panierModel->getAllPaniers();
         $produits = $this->produitModel->getAllProduits();
+        return $app["twig"]->render('frontOff/showPanierUser.html.twig',['dataProduit'=>$produits,'dataPanier'=>$paniers]);
+    }
+
+    public function addPanier(Application $app, $id){
+        $this->produitModel = new ProduitModel($app);
+        $produits = $this->produitModel->getAllProduits();
+        $donnees = $this->produitModel->getProduit($id);
+        $this->userModel = new UserModel($app);
+        $donnees['user_id'] = $app['session']->get('user_id');
+        $donnees['dateAjoutPanier'] = date('y-m-d h:m:s');
+        $donnees['etat_id'] = 1;
+        $this->commandeModel = new CommandeModel($app);
+        $this->commandeModel->addCommande($donnees);
+        $donnees += $this->commandeModel->getCommande($donnees);
+        $this->panierModel = new PanierModel($app);
+        $this->panierModel->addPanier($donnees);
+        $paniers = $this->panierModel->getAllPaniers();
         return $app["twig"]->render('frontOff/showPanierUser.html.twig',['dataProduit'=>$produits,'dataPanier'=>$paniers]);
     }
 
@@ -57,6 +78,8 @@ class PanierController implements ControllerProviderInterface
 
         $controllers->get('/', 'App\Controller\panierController::index')->bind('panier.index');
         $controllers->get('/show', 'App\Controller\panierController::showPanier')->bind('panier.showProduits');
+
+        $controllers->post('/add{id}', 'App\Controller\PanierController::addPanier')->bind('panier.add');
 
         return $controllers;
     }
