@@ -24,6 +24,8 @@ class PanierModel {
         return $queryBuilder->execute()->fetchAll();
     }
 
+
+
     public function getPanier($id){
 
         $queryBuilder = new QueryBuilder($this->db);
@@ -39,8 +41,8 @@ class PanierModel {
         $queryBuilder = new QueryBuilder($this->db);
         $queryBuilder->insert('paniers')
             ->values([
-                'quantite'=>'quantite+1',
                 'prix'=>'?',
+                'quantite'=>'quantite+1',
                 'dateAjoutPanier'=>'?',
                 'user_id'=>'?',
                 'produit_id'=>'?',

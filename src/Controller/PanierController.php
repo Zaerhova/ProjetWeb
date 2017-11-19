@@ -43,7 +43,6 @@ class PanierController implements ControllerProviderInterface
         $this->produitModel = new ProduitModel($app);
         $produits = $this->produitModel->getAllProduits();
         $donnees = $this->produitModel->getProduit($id);
-        $this->userModel = new UserModel($app);
         $donnees['user_id'] = $app['session']->get('user_id');
         $donnees['dateAjoutPanier'] = date('y-m-d h:m:s');
         $donnees['etat_id'] = 1;
@@ -53,6 +52,7 @@ class PanierController implements ControllerProviderInterface
         $this->panierModel = new PanierModel($app);
         $this->panierModel->addPanier($donnees);
         $paniers = $this->panierModel->getAllPaniers();
+
         return $app["twig"]->render('frontOff/showPanierUser.html.twig',['dataProduit'=>$produits,'dataPanier'=>$paniers]);
     }
 

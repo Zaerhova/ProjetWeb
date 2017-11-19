@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS typeProduits (
 )  DEFAULT CHARSET=utf8;
 -- Contenu de la table typeproduits
 INSERT INTO typeProduits (id, libelle) VALUES
-(1, 'type 1'),
-(2, 'type 2'),
-(3, 'type 3');
+(1, 'petit'),
+(2, 'moyen'),
+(3, 'grand');
 
 -- --------------------------------------------------------
 -- Structure de la table etats
@@ -43,12 +43,12 @@ CREATE TABLE IF NOT EXISTS produits (
 ) DEFAULT CHARSET=utf8 ;
 
 INSERT INTO produits (id,typeProduit_id,nom,prix,photo,dispo,stock) VALUES
-(1,1, 'produit 1','100','imageProduit.jpeg',1,5),
-(2,1, 'produit 2','5.5','imageProduit.jpeg',1,4),
-(3,2, 'produit 3','8.5','imageProduit.jpeg',1,10),
-(4,2, 'produit 4','8','imageProduit.jpeg',1,5),
-(5,2, 'produit 5','55','imageProduit.jpeg',1,4),
-(6,3, 'produit 6','5','imageProduit.jpeg',1,10);
+(1,1, 'Lego 1','100','imageLego.jpeg',1,5),
+(2,1, 'Lego 2','5.5','imageLego.jpeg',1,4),
+(3,2, 'Lego 3','8.5','imageLego.jpeg',1,10),
+(4,2, 'Lego 4','8','imageLego.jpeg',1,5),
+(5,2, 'Lego 5','55','imageLego.jpeg',1,4),
+(6,3, 'Lego 6','5','imageLego.jpeg',1,10);
 
 
 -- --------------------------------------------------------

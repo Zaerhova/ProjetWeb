@@ -30,12 +30,13 @@
             <table>
                 <caption>Paniers</caption>
                 <thread>
-                    <tr><th>quantite</th><th>prix</th><th>dateAjoutPanier</th>
+                    <tr><th>nom</th><th>quantite</th><th>prix</th><th>dateAjoutPanier</th>
                     </tr>
                 </thread>
                 <tbody>
                     {% for panier in dataPanier if dataPanier is not empty %}
-                        <tr>
+                        <tr>{% for produit in dataProduit if panier.produit_id == produit.id %}
+                            <td>{{ produit.nom }}</td>{% endfor %}
                             <td>{{ panier.quantite }}</td><td>{{ panier.prix }}</td><td>{{ panier.dateAjoutPanier }}</td>
                         </tr>
                     {% endfor %}
