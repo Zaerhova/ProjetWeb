@@ -17,10 +17,9 @@ class PanierModel {
 
         $queryBuilder = new QueryBuilder($this->db);
         $queryBuilder
-            ->select('pa.id','count(*) as quantite','pa.prix','pa.dateAjoutPanier','pa.user_id','pa.produit_id','pa.commande_id')
+            ->select('pa.id','pa.quantite','pa.prix','pa.dateAjoutPanier','pa.user_id','pa.produit_id','pa.commande_id')
             ->from('paniers','pa')
-            ->groupBy('pa.produit_id')
-            ->orderBy('pa.id','ASC');
+            ->orderBy('pa.quantite','DESC');
         return $queryBuilder->execute()->fetchAll();
     }
 
@@ -42,7 +41,7 @@ class PanierModel {
         $queryBuilder->insert('paniers')
             ->values([
                 'prix'=>'?',
-                'quantite'=>'quantite+1',
+                'quantite'=>'1',
                 'dateAjoutPanier'=>'?',
                 'user_id'=>'?',
                 'produit_id'=>'?',
@@ -53,6 +52,25 @@ class PanierModel {
             ->setParameter(2,$donnees['user_id'])
             ->setParameter(3,$donnees['id'])
             ->setParameter(4,$donnees['commande_id']);
+        return $queryBuilder->execute();
+    }
+
+    public function addQuantite($id)
+    {
+        $queryBuilder = new QueryBuilder($this->db);
+        $queryBuilder->update('paniers')
+            ->set('quantite','`quantite`+1')
+            ->where('id='.$id);
+        $queryBuilder->execute();
+    }
+
+    public function deletePanier($id) {
+        $queryBuilder = new QueryBuilder($this->db);
+        $queryBuilder
+            ->delete('paniers')
+            ->where('id = :id')
+            ->setParameter('id',(int)$id)
+        ;
         return $queryBuilder->execute();
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Model\CommandeModel;
-use App\Model\UserModel;
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
 
@@ -12,11 +11,8 @@ use Symfony\Component\HttpFoundation\Request;   // pour utiliser request
 
 use App\Model\PanierModel;
 use App\Model\ProduitModel;
-use App\Model\TypeProduitModel;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
+
 use Symfony\Component\Security;
 
 class PanierController implements ControllerProviderInterface
@@ -24,7 +20,6 @@ class PanierController implements ControllerProviderInterface
 
     private $panierModel;
     private $produitModel;
-    private $userModel;
     private $commandeModel;
 
     public function index(Application $app) {
@@ -40,6 +35,7 @@ class PanierController implements ControllerProviderInterface
     }
 
     public function addPanier(Application $app, $id){
+        $compteur = 0;
         $this->produitModel = new ProduitModel($app);
         $produits = $this->produitModel->getAllProduits();
         $donnees = $this->produitModel->getProduit($id);
@@ -50,12 +46,33 @@ class PanierController implements ControllerProviderInterface
         $this->commandeModel->addCommande($donnees);
         $donnees += $this->commandeModel->getCommande($donnees);
         $this->panierModel = new PanierModel($app);
-        $this->panierModel->addPanier($donnees);
         $paniers = $this->panierModel->getAllPaniers();
+        if (empty($paniers)){
+            $this->panierModel->addPanier($donnees);
+        }else{
+            foreach ($paniers as $panier) {
+                if ($panier['produit_id'] == $id){
+                    $this->panierModel->addQuantite($panier['id']);
+                }else $compteur++;
 
+            }
+            if (sizeof($paniers) == $compteur){
+                $this->panierModel->addPanier($donnees);
+            }
+        }
+        $paniers = $this->panierModel->getAllPaniers();
         return $app["twig"]->render('frontOff/showPanierUser.html.twig',['dataProduit'=>$produits,'dataPanier'=>$paniers]);
     }
 
+    public function deletePanier(Application $app, $id) {
+        $this->panierModel = new PanierModel($app);
+        $this->produitModel = new ProduitModel($app);
+        $this->panierModel->deletePanier($id);
+        $paniers = $this->panierModel->getAllPaniers();
+        $produits = $this->produitModel->getAllProduits();
+        return $app["twig"]->render('frontOff/showPanierUser.html.twig',['dataProduit'=>$produits,'dataPanier'=>$paniers]);
+
+    }
 
 
 
@@ -80,6 +97,8 @@ class PanierController implements ControllerProviderInterface
         $controllers->get('/show', 'App\Controller\panierController::showPanier')->bind('panier.showProduits');
 
         $controllers->post('/add{id}', 'App\Controller\PanierController::addPanier')->bind('panier.add');
+
+        $controllers->post('/delete{id}','App\Controller\PanierController::deletePanier')->bind('panier.delete');
 
         return $controllers;
     }

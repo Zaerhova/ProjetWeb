@@ -3,7 +3,7 @@
     <h1>Projet 2 web : site de vente Espace Client</h1>
     
     <div class="row">
-        <div class="small-7 large-7 columns">
+        <div class="small-6 large-6 columns">
             <table>
                 <caption>Produits</caption>
                 <thread>
@@ -30,7 +30,7 @@
             <table>
                 <caption>Paniers</caption>
                 <thread>
-                    <tr><th>nom</th><th>quantite</th><th>prix</th><th>dateAjoutPanier</th>
+                    <tr><th>nom</th><th>quantite</th><th>prix</th><th>dateAjoutPanier</th><th>supprimer</th>
                     </tr>
                 </thread>
                 <tbody>
@@ -38,6 +38,12 @@
                         <tr>{% for produit in dataProduit if panier.produit_id == produit.id %}
                             <td>{{ produit.nom }}</td>{% endfor %}
                             <td>{{ panier.quantite }}</td><td>{{ panier.prix }}</td><td>{{ panier.dateAjoutPanier }}</td>
+                            <td>
+                                <form action="{{ path('panier.delete',{id:panier.id}) }}" method="post">
+                                    <input type="hidden" name="panier_id" value="{{ panier.id }}">
+                                    <input type="image" style="width:40px;height:40px" src="{{ asset('images/deletePanier.jpg') }}" alt="delete Panier">
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
