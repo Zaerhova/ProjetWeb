@@ -49,4 +49,20 @@ class CommandeModel {
 
     }
 
+    public function createCommandeTransat($user_id, $prix_total){
+        $conn=$this->db;
+        $conn->beginTransiction();
+        $requestSQL=$conn->prepare('select sum(prix*quantite) as prix from paniers where user_id = :idUser and commande_id is Null');
+        $requestSQL->execute(['idUser'=>$user_id]);
+        $prix = $requestSQL->fetch()['prix'];
+        $conn->commit();
+        $conn->beginTransaction();
+        $requestSQL=$conn->prepare('insert into commandes(user_id,etat_id) value (?,?,?)');
+        $requestSQL->execute([$user_id,$prix,1]);
+        $lastinsertid = $conn->lastInsertId();
+        $requestSQL=$conn->prepare('update paniers set comannde_id = ? where user_id=? and commande_id is null');
+        $requestSQL->execute([$lastinsertid, $user_id]);
+        $conn->commit();
+    }
+
 }
