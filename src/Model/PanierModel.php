@@ -45,13 +45,11 @@ class PanierModel {
                 'dateAjoutPanier'=>'?',
                 'user_id'=>'?',
                 'produit_id'=>'?',
-                'commande_id'=>'?'
             ])
             ->setParameter(0,$donnees['prix'])
             ->setParameter(1,$donnees['dateAjoutPanier'])
             ->setParameter(2,$donnees['user_id'])
-            ->setParameter(3,$donnees['id'])
-            ->setParameter(4,$donnees['commande_id']);
+            ->setParameter(3,$donnees['id']);
         return $queryBuilder->execute();
     }
 
@@ -71,6 +69,16 @@ class PanierModel {
             ->where('id = :id')
             ->setParameter('id',(int)$id)
         ;
+        return $queryBuilder->execute();
+    }
+
+    public function deleteAllPanier($idUser)
+    {
+        $queryBuilder = new QueryBuilder($this->db);
+        $queryBuilder
+            ->delete('paniers')
+            ->where('user_id=:idUser')
+            ->setParameter('idUser',(int)$idUser);
         return $queryBuilder->execute();
     }
 }

@@ -41,10 +41,6 @@ class PanierController implements ControllerProviderInterface
         $donnees = $this->produitModel->getProduit($id);
         $donnees['user_id'] = $app['session']->get('user_id');
         $donnees['dateAjoutPanier'] = date('y-m-d h:m:s');
-        $donnees['etat_id'] = 1;
-        $this->commandeModel = new CommandeModel($app);
-        $this->commandeModel->addCommande($donnees);
-        $donnees += $this->commandeModel->getCommande($donnees);
         $this->panierModel = new PanierModel($app);
         $paniers = $this->panierModel->getAllPaniers();
         if (empty($paniers)){
@@ -60,17 +56,23 @@ class PanierController implements ControllerProviderInterface
                 $this->panierModel->addPanier($donnees);
             }
         }
-        $paniers = $this->panierModel->getAllPaniers();
-        return $app["twig"]->render('frontOff/showPanierUser.html.twig',['dataProduit'=>$produits,'dataPanier'=>$paniers]);
+        return $app->redirect($app["url_generator"]->generate("panier.index"));
     }
 
     public function deletePanier(Application $app, $id) {
         $this->panierModel = new PanierModel($app);
         $this->produitModel = new ProduitModel($app);
         $this->panierModel->deletePanier($id);
-        $paniers = $this->panierModel->getAllPaniers();
-        $produits = $this->produitModel->getAllProduits();
-        return $app["twig"]->render('frontOff/showPanierUser.html.twig',['dataProduit'=>$produits,'dataPanier'=>$paniers]);
+        return $app->redirect($app["url_generator"]->generate("panier.index"));
+
+    }
+    public function addCommande(Application $app){
+        $this->commandeModel = new CommandeModel($app);
+        $this->panierModel = new PanierModel($app);
+        $user_id = $app['session']->get('user_id');
+        $this->commandeModel->createCommandeTransat($user_id);
+        $this->panierModel->deleteAllPanier($user_id);
+        return $app->redirect($app["url_generator"]->generate("panier.index"));
 
     }
 
@@ -99,6 +101,9 @@ class PanierController implements ControllerProviderInterface
         $controllers->post('/add{id}', 'App\Controller\PanierController::addPanier')->bind('panier.add');
 
         $controllers->post('/delete{id}','App\Controller\PanierController::deletePanier')->bind('panier.delete');
+
+        $controllers->get('/add', 'App\Controller\PanierController::addCommande')->bind('panier.addCommande');
+
 
         return $controllers;
     }

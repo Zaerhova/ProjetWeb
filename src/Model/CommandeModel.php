@@ -21,15 +21,17 @@ class CommandeModel {
         $this->db = $app['db'];
     }
 
-    public function getCommande($donnees){
-
+    public function getAllCommande()
+    {
         $queryBuilder = new QueryBuilder($this->db);
-        $queryBuilder
-            ->select('c.id as commande_id','c.user_id','c.prix','c.date_achat','c.etat_id')
+        $queryBuilder->select('c.id','c.user_id','c.prix','c.date_achat','c.etat_id','e.libelle')
             ->from('commandes','c')
-            ->where('c.user_id='.$donnees['user_id']);
-        return $queryBuilder->execute()->fetch();
+            ->innerJoin('c','etats','e','c.etat_id = e.id');
+        return $queryBuilder->execute()->fetchAll();
     }
+
+
+
 
     public function addCommande($donnees){
 
@@ -49,20 +51,51 @@ class CommandeModel {
 
     }
 
-    public function createCommandeTransat($user_id, $prix_total){
+    public function createCommandeTransat($user_id){
         $conn=$this->db;
-        $conn->beginTransiction();
+        $conn->beginTransaction();
         $requestSQL=$conn->prepare('select sum(prix*quantite) as prix from paniers where user_id = :idUser and commande_id is Null');
         $requestSQL->execute(['idUser'=>$user_id]);
-        $prix = $requestSQL->fetch()['prix'];
         $conn->commit();
+        $prix = $requestSQL->fetch()['prix'];
         $conn->beginTransaction();
-        $requestSQL=$conn->prepare('insert into commandes(user_id,etat_id) value (?,?,?)');
-        $requestSQL->execute([$user_id,$prix,1]);
+        $requestSQL=$conn->prepare('insert into commandes(user_id,etat_id,prix) value (?,?,?)');
+        $requestSQL->execute([$user_id,1,$prix]);
         $lastinsertid = $conn->lastInsertId();
-        $requestSQL=$conn->prepare('update paniers set comannde_id = ? where user_id=? and commande_id is null');
+        $requestSQL=$conn->prepare('update paniers set commande_id = ? where user_id=? and commande_id is null');
         $requestSQL->execute([$lastinsertid, $user_id]);
         $conn->commit();
+    }
+
+    public function getCommandeUser($user_id)
+    {
+        $queryBuilder = new QueryBuilder($this->db);
+        $queryBuilder->select('c.id','c.user_id','c.prix','c.date_achat','c.etat_id','e.libelle')
+            ->from('commandes','c')
+            ->innerJoin('c','etats','e','c.etat_id = e.id')
+            ->where('user_id=:idUser')
+            ->setParameter('idUser',(int)$user_id);
+        return $queryBuilder->execute()->fetchAll();
+    }
+
+    public function getCommande($id){
+        $queryBuilder = new QueryBuilder($this->db);
+        $queryBuilder->select('c.id','c.user_id','c.prix','c.date_achat','c.etat_id','e.libelle')
+            ->from('commandes','c')
+            ->innerJoin('c','etats','e','c.etat_id = e.id')
+            ->where('c.id=:id')
+            ->setParameter('id',(int)$id);
+        return $queryBuilder->execute()->fetchAll();
+    }
+
+    public function updateCommande($id)
+    {
+        $queryBuilder = new QueryBuilder($this->db);
+        $queryBuilder->update('commandes')
+            ->set('etat_id','2')
+            ->where('id='.$id);
+        return $queryBuilder->execute();
+
     }
 
 }

@@ -1,0 +1,26 @@
+{% extends "layout.html.twig" %}
+{% block contenu %}
+
+<div class="row">
+    <div class="small-6 large-6 columns">
+        <table>
+            <caption>Commandes</caption>
+            <thread>
+                <tr><th>Prix</th><th>etat</th><th>detail</th>
+                </tr>
+            </thread>
+            <tbody>
+            {% for commande in commandeUser if commandeUser is not empty %}
+                <tr>
+                   <td>{{ commande.prix }}</td>
+                    <td>{{ commande.libelle }}</td>
+                    <td><a href="{{ path('commande.detail',{id:commande.id}) }}">détail</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
