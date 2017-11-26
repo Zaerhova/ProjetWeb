@@ -35,6 +35,15 @@ class CommandeController implements ControllerProviderInterface
 
     }
 
+    public function addCommande(Application $app){
+        $this->commandeModel = new CommandeModel($app);
+        $this->panierModel = new PanierModel($app);
+        $user_id = $app['session']->get('user_id');
+        $this->commandeModel->createCommandeTransat($user_id);
+        $this->panierModel->deleteAllPanier($user_id);
+        return $app->redirect($app["url_generator"]->generate("panier.index"));
+    }
+
     public function showCommandeUser(Application $app){
         $this->commandeModel = new CommandeModel($app);
         $user_id =  $app['session']->get('user_id');
@@ -85,6 +94,8 @@ class CommandeController implements ControllerProviderInterface
         $controllers->get('/show', 'App\Controller\CommandeController::showCommandeUser')->bind('commande.showProduits');
         $controllers->put('/update{id}', 'App\Controller\CommandeController::updateCommande')->bind('commande.update');
         $controllers->get('/detail{id}', 'App\Controller\CommandeController::detailCommande')->bind('commande.detail');
+        $controllers->get('/add', 'App\Controller\CommandeController::addCommande')->bind('commande.add');
+
 
 
         return $controllers;

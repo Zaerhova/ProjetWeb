@@ -66,15 +66,7 @@ class PanierController implements ControllerProviderInterface
         return $app->redirect($app["url_generator"]->generate("panier.index"));
 
     }
-    public function addCommande(Application $app){
-        $this->commandeModel = new CommandeModel($app);
-        $this->panierModel = new PanierModel($app);
-        $user_id = $app['session']->get('user_id');
-        $this->commandeModel->createCommandeTransat($user_id);
-        $this->panierModel->deleteAllPanier($user_id);
-        return $app->redirect($app["url_generator"]->generate("panier.index"));
 
-    }
 
 
 
@@ -102,7 +94,6 @@ class PanierController implements ControllerProviderInterface
 
         $controllers->post('/delete{id}','App\Controller\PanierController::deletePanier')->bind('panier.delete');
 
-        $controllers->get('/add', 'App\Controller\PanierController::addCommande')->bind('panier.addCommande');
 
 
         return $controllers;
