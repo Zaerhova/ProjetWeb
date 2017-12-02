@@ -97,6 +97,9 @@ class ProduitController implements ControllerProviderInterface
     }
 
     public function validFormEditProduit(Application $app, Request $req) {
+
+
+
         if (isset($_POST['nom']) && isset($_POST['typeProduit_id']) and isset($_POST['nom']) and isset($_POST['photo']) and isset($_POST['id'])) {
             $donnees = [
                 'nom' => htmlspecialchars($_POST['nom']),                    // echapper les entrées
@@ -161,7 +164,6 @@ class ProduitController implements ControllerProviderInterface
 
         $controllers->get('/delete/{id}', 'App\Controller\produitController::deleteProduit')->bind('produit.deleteProduit')->assert('id', '\d+');
         $controllers->delete('/delete', 'App\Controller\produitController::validFormDeleteProduit')->bind('produit.validFormDeleteProduit');
-
         $controllers->get('/edit/{id}', 'App\Controller\produitController::editProduit')->bind('produit.editProduit')->assert('id', '\d+');
         $controllers->put('/edit', 'App\Controller\produitController::validFormEditProduit')->bind('produit.validFormEditProduit');
 

@@ -40,9 +40,10 @@ class CommandeController implements ControllerProviderInterface
         $this->panierModel = new PanierModel($app);
         $user_id = $app['session']->get('user_id');
         $this->commandeModel->createCommandeTransat($user_id);
-        $this->panierModel->deleteAllPanier($user_id);
         return $app->redirect($app["url_generator"]->generate("panier.index"));
     }
+
+
 
     public function showCommandeUser(Application $app){
         $this->commandeModel = new CommandeModel($app);
@@ -67,7 +68,8 @@ class CommandeController implements ControllerProviderInterface
     public function detailCommande(Application $app,$id){
         $this->commandeModel = new CommandeModel($app);
         $commandeUser = $this->commandeModel->getCommande($id);
-        return $app["twig"]->render('frontOff/showDetailCommande.html.twig',['commandeUser'=>$commandeUser]);
+        $produitUser = $this->commandeModel->getProduitCommande($id);
+        return $app["twig"]->render('frontOff/showDetailCommande.html.twig',['commandeUser'=>$commandeUser,'produitUser'=>$produitUser]);
     }
 
 

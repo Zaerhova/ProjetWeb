@@ -9,7 +9,6 @@
 namespace App\Model;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use function MongoDB\BSON\fromJSON;
 use Silex\Application;
 
 class CommandeModel {
@@ -86,6 +85,18 @@ class CommandeModel {
             ->where('c.id=:id')
             ->setParameter('id',(int)$id);
         return $queryBuilder->execute()->fetchAll();
+    }
+
+    public function getProduitCommande($id){
+        $queryBuilder = new QueryBuilder($this->db);
+        $queryBuilder->select('pr.nom','pr.prix','pr.photo')
+            ->from('commandes','c')
+            ->innerJoin('c','paniers','p','p.commande_id = c.id')
+            ->innerJoin('p','produits','pr','pr.id = p.produit_id')
+            ->where('c.id=:id')
+            ->setParameter('id',(int)$id);
+        return $queryBuilder->execute()->fetchAll();
+
     }
 
     public function updateCommande($id)

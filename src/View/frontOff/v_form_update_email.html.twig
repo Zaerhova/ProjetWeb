@@ -1,0 +1,19 @@
+{% extends "layout.html.twig" %}
+{% block contenu %}
+    <form method="post" action="{{ path('profile.validFormEmail') }}">
+        <div class="row">
+            <fieldset>
+                <legend>Modifier l'email</legend>
+                <label>Email :
+                    <input name="email"  type="text"  size="18" value="{{user.email}}" />
+                    {% if erreurs.email is defined %}
+                        <small class="error">{{erreurs.email}}</small>
+                    {% endif %}
+                </label>
+                <input type="hidden" id="id" name="id" value="{{ user.id }}">
+                <input type="hidden" id="_method" name="_method" value="put" />
+                <input type="submit" name="modifierProfile" value="Modifier" />
+            </fieldset>
+        </div>
+    </form>
+{% endblock %}

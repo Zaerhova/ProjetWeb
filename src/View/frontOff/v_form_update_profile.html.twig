@@ -1,0 +1,42 @@
+{% extends "layout.html.twig" %}
+{% block contenu %}
+    <form method="post" action="{{ path('profile.validFormUpdate') }}">
+        <div class="row">
+            <fieldset>
+                <legend>Modifier le profile</legend>
+                <input name="id"  type="hidden" value="{{user.id}}" />
+                <label>Nom :
+                    <input name="nom"  type="text"  size="18" value="{{user.nom}}" />
+                    {% if erreurs.nom is defined %}
+                        <small class="error">{{erreurs.nom}}</small>
+                    {% endif %}
+                </label>
+                <label>Code Postal :
+                    <input name="code_postal"  type="text"  size="18" value="{{user.code_postal}}" />
+                    {% if erreurs.code_postal is defined %}
+                        <small class="error">{{erreurs.code_postal}}</small>
+                    {% endif %}
+                </label>
+                <label>Ville
+                    <input name="ville"  type="text"  size="18" 	value="{{user.ville}}"/>
+                    {% if erreurs.ville is defined %}
+                        <small class="error">{{erreurs.ville}}</small>
+                    {% endif %}
+                    {% if errors.ville is defined %}
+                        <small class="error">message 2{{errors.ville.message}}</small>
+                    {% endif %}
+                </label>
+                <label>Adresse
+                    <input name="adresse"  type="text"  size="18" value="{{user.adresse}}"/>
+                    {% if erreurs.adresse is defined %}
+                        <small class="error">{{erreurs.adresse}}</small>
+                    {% endif %}
+                </label>
+
+                <input type="hidden" id="_method" name="_method" value="put" />
+
+                <input type="submit" name="modifierProfile" value="Modifier" />
+            </fieldset>
+        </div>
+    </form>
+{% endblock %}

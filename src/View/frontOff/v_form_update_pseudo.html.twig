@@ -1,0 +1,19 @@
+{% extends "layout.html.twig" %}
+{% block contenu %}
+    <form method="post" action="{{ path('profile.validFormPseudo') }}">
+        <div class="row">
+            <fieldset>
+                <legend>Modifier le pseudonyme</legend>
+                <label>Pseudonyme :
+                    <input name="pseudo"  type="text"  size="18" value="{{user.username}}" />
+                    {% if erreurs.pseudo is defined %}
+                        <small class="error">{{erreurs.pseudo}}</small>
+                    {% endif %}
+                </label>
+                <input type="hidden" id="id" name="id" value="{{ user.id }}">
+                <input type="hidden" id="_method" name="_method" value="put" />
+                <input type="submit" name="modifierProfile" value="Modifier" />
+            </fieldset>
+        </div>
+    </form>
+{% endblock %}

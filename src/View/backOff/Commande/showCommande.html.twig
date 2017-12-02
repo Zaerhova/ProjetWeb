@@ -6,7 +6,7 @@
             <table>
                 <caption>Commandes</caption>
                 <thread>
-                    <tr><th>IdCommande</th><th>idUser</th><th>Prix</th><th>date_achat</th><th>etat</th><th>Action</th>
+                    <tr><th>IdCommande</th><th>idUser</th><th>Prix</th><th>date_achat</th><th>etat</th><th>detail</th><th>Action</th>
                     </tr>
                 </thread>
                 <tbody>
@@ -14,7 +14,8 @@
                     <tr>
                         <td>{{ commande.id }}</td><td>{{ commande.user_id }}</td><td>{{ commande.prix }}</td><td>{{ commande.date_achat }}</td>
                         <td>{{ commande.libelle }}</td>
-                    {% if commande.etat_id == 1 %}
+                        <td><a href="{{ path('commande.detail',{id:commande.id}) }}">détail</a></td>
+                        {% if commande.etat_id == 1 %}
                         <td>
                         <form action="{{ path('commande.update',{id:commande.id}) }}" method="post">
                             <input type="hidden" name="commande_id" value="{{ commande.id }}">

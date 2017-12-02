@@ -38,6 +38,7 @@
                     <small class="error">{{erreurs.photo}}</small>
                 {% endif %}
             </label>
+            <input type="hidden"   name="_csrf_token"   value="{{ csrf_token('token_add_produit') }}">
             <input type="submit" name="creerProduit" value="créer" />
         </fieldset>
     </div>

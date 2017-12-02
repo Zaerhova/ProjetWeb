@@ -20,7 +20,6 @@ class PanierController implements ControllerProviderInterface
 
     private $panierModel;
     private $produitModel;
-    private $commandeModel;
 
     public function index(Application $app) {
         return $this->showPanier($app);
@@ -37,7 +36,6 @@ class PanierController implements ControllerProviderInterface
     public function addPanier(Application $app, $id){
         $compteur = 0;
         $this->produitModel = new ProduitModel($app);
-        $produits = $this->produitModel->getAllProduits();
         $donnees = $this->produitModel->getProduit($id);
         $donnees['user_id'] = $app['session']->get('user_id');
         $donnees['dateAjoutPanier'] = date('y-m-d h:m:s');
@@ -45,14 +43,13 @@ class PanierController implements ControllerProviderInterface
         $paniers = $this->panierModel->getAllPaniers();
         if (empty($paniers)){
             $this->panierModel->addPanier($donnees);
-        }else{
+        }else {
             foreach ($paniers as $panier) {
-                if ($panier['produit_id'] == $id){
+                if ($panier['produit_id'] == $id && !isset($panier['commande_id']) ) {
                     $this->panierModel->addQuantite($panier['id']);
-                }else $compteur++;
-
+                } else $compteur++;
             }
-            if (sizeof($paniers) == $compteur){
+            if (sizeof($paniers) == $compteur) {
                 $this->panierModel->addPanier($donnees);
             }
         }
@@ -66,6 +63,7 @@ class PanierController implements ControllerProviderInterface
         return $app->redirect($app["url_generator"]->generate("panier.index"));
 
     }
+
 
 
 
