@@ -25,7 +25,6 @@ class ProfileController implements ControllerProviderInterface
     public function updateProfile(Application $app,$id){
         $this->profileModel = new ProfileModel($app);
         $user = $this->profileModel->getUser($id);
-        var_dump($user);
         return $app['twig']->render("frontOff/v_form_update_profile.html.twig",['user'=>$user]);
     }
 
