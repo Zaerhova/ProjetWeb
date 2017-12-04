@@ -33,6 +33,7 @@
                     <tr><th>nom</th><th>quantite</th><th>prix</th><th>dateAjoutPanier</th><th>supprimer</th>
                     </tr>
                 </thread>
+
                     {% set compteur = 0 %}
                     {% for panier in dataPanier if dataPanier is not empty%}
                         {% if panier.commande_id is empty %}
