@@ -1,0 +1,78 @@
+
+{% extends "layout.html.twig" %}
+{% block contenu %}
+    <form method="post" action="{{ path('user.validFormRegister') }}">
+
+        <div class="row">
+
+            <fieldset>
+                <legend>S'enregistrer</legend>
+                <label>Login :
+                    <input name="login"  type="text"  size="18" value="{{donnees.login|default("") }}" />
+                    {% if erreurs.login is defined %}
+                        <small class="error">{{erreurs.login}}</small>
+                    {% endif %}
+                </label>
+                <label>Mot de passe :
+                    <input name="password"  type="password"  size="18" value="{{donnees.password|default("") }}" />
+                </label>
+                {% if erreurs.password is defined %}
+                    <small class="error">{{erreurs.password}}</small>
+                {% endif %}
+
+                <label>Confirmer mot de passe:
+                    <input name="password2"  type="password"  size="18" value="{{donnees.password2|default("") }}" />
+                </label>
+                {% if erreurs.password2 is defined %}
+                    <small class="error">{{erreurs.password2}}</small>
+                {% endif %}
+
+                <label>Nom :
+                    <input name="nom"  type="text"  size="18" value="{{donnees.nom|default("") }}" />
+                </label>
+                {% if erreurs.nom is defined %}
+                    <small class="error">{{erreurs.nom}}</small>
+                {% endif %}
+
+                <label>Email :
+                    <input name="email"  type="text"  size="18" value="{{donnees.email|default("") }}" />
+                </label>
+                {% if erreurs.email is defined %}
+                    <small class="error">{{erreurs.email}}</small>
+                {% endif %}
+
+                <label>Code postal :
+                    <input name="codePostal"  type="text"  size="18" value="{{donnees.codePostal|default("") }}" />
+                </label>
+                {% if erreurs.codePostal is defined %}
+                    <small class="error">{{erreurs.codePostal}}</small>
+                {% endif %}
+
+                <label>Ville :
+                    <input name="ville"  type="text"  size="18" value="{{donnees.ville|default("") }}" />
+                </label>
+                {% if erreurs.ville is defined %}
+                    <small class="error">{{erreurs.ville}}</small>
+                {% endif %}
+
+                <label>Adresse :
+                    <input name="adresse"  type="text"  size="18" value="{{donnees.adresse|default("") }}" />
+                </label>
+                {% if erreurs.adresse is defined %}
+                    <small class="error">{{erreurs.adresse}}</small>
+                {% endif %}
+                <label for="captcha">Captcha :
+                    <input type="text" name="captcha">
+                    <img src="{{ captcha }}" />
+                </label>
+                {% if erreurs.captcha is defined %}
+                    <small class="error">{{erreurs.captcha}}</small>
+                {% endif %}
+
+
+                <input type="submit" name="register" value="register" />
+            </fieldset>
+        </div>
+    </form>
+
+{% endblock %}

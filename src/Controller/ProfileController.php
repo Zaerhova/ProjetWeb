@@ -101,26 +101,6 @@ class ProfileController implements ControllerProviderInterface
         else return $app['twig']->render("frontOff/v_form_update_email.html.twig",['user' => $donnees , 'erreurs' => $erreurs]);
     }
 
-    public function updatePassword(Application $app){
-        $this->profileModel = new ProfileModel($app);
-        $user = $this->profileModel->getUser($app['session']->get('user_id'));
-        return $app['twig']->render("frontOff/v_form_update_password.html.twig",['user' => $user]);
-    }
-
-    public function validFormPassword(Application $app){
-        $donnees = [
-            'motdepasse' => htmlspecialchars($_POST['motdepasse']),
-            'id' => $_POST['id'],
-        ];
-        if (! preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,16}$/",$donnees['motdepasse'])) $erreurs['motdepasse']='mdp faux (mini 8 caractère, 1 majusucle et 1 chiffre)';
-        if(empty($erreurs)){
-            $this->profileModel = new ProfileModel($app);
-            $this->profileModel->updatePassword($donnees);
-            return $app->redirect($app["url_generator"]->generate('profile.index'));
-        }
-        else return $app['twig']->render("frontOff/v_form_update_password.html.twig",['user' => $donnees , 'erreurs' => $erreurs]);
-    }
-
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
@@ -132,8 +112,6 @@ class ProfileController implements ControllerProviderInterface
         $controllers->put("/updatePseudo",'App\Controller\ProfileController::validFormPseudo')->bind('profile.validFormPseudo');
         $controllers->get("/updateEmail",'App\Controller\ProfileController::updateEmail')->bind('profile.updateEmail');
         $controllers->put("/updateEmail",'App\Controller\ProfileController::validFormEmail')->bind('profile.validFormEmail');
-        $controllers->get("/updatePassword",'App\Controller\ProfileController::updatePassword')->bind('profile.updatePassword');
-        $controllers->put("/updatePassword",'App\Controller\ProfileController::validFormPassword')->bind('profile.validFormPassword');
 
         return $controllers;
     }

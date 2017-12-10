@@ -69,7 +69,6 @@ CREATE TABLE users (
   id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   username VARCHAR(100) NOT NULL,
   password VARCHAR(255) NOT NULL DEFAULT '',
-  motdepasse VARCHAR(255) NOT NULL DEFAULT '',
   roles VARCHAR(255) NOT NULL DEFAULT 'ROLE_CLIENT',
   email  VARCHAR(255) NOT NULL DEFAULT '',
   isEnabled TINYINT(1) NOT NULL DEFAULT 1,
@@ -86,12 +85,10 @@ CREATE TABLE users (
 
 # mot de passe crypté avec security.encoder.bcrypt
 
-INSERT INTO users (id,username,password,motdepasse,email,roles) VALUES
-(1, 'admin', '$2y$13$mJK5hyDNAY9rcDuEBofjJ.h3d7xBwlApfMoknBDO0AvXLr1AaJM02', 'admin', 'admin@gmail.com','ROLE_ADMIN'),
-(2, 'invite', '$2y$13$j5rdj5QL3fd.IZlA5JNbc.kTRaa1YbJK/G7h2mB51ySzaDdgEbo8W', 'invite', 'admin@gmail.com','ROLE_INVITE'),
-(3, 'vendeur', '$2y$13$/gwC0Iv6ssewrr9JeUDDuOcRTWD.uIEjJpH1HUWPAxe.5EwY98OEO','vendeur', 'vendeur@gmail.com','ROLE_VENDEUR'),
-(4, 'client', '$2y$13$bhuMlUWdfc5mAhVumuKUG.etahlJ399DEwuQPhbdXjiCdKIeX2nii', 'client', 'client@gmail.com','ROLE_CLIENT'),
-(5, 'client2', '$2y$13$SYEM3Tk/5G.C85pIAm0cSOd8BFrFTEnLHBSWsW96Q3k9gCdFXRmvm','client2', 'client2@gmail.com','ROLE_CLIENT');
+INSERT INTO users (id,username,password,email,roles) VALUES
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3','admin@gmail.com','ROLE_ADMIN'),
+(2, 'client', '62608e08adc29a8d6dbc9754e659f125','client@gmail.com','ROLE_CLIENT'),
+(3, 'client2', '2c66045d4e4a90814ce9280272e510ec','client2@gmail.com','ROLE_CLIENT');
 
 
 

@@ -10,6 +10,7 @@
                         <small class="error">{{erreurs.pseudo}}</small>
                     {% endif %}
                 </label>
+                <input type="hidden"   name="_csrf_token"   value="{{ csrf_token('token_update_pseudo') }}">
                 <input type="hidden" id="id" name="id" value="{{ user.id }}">
                 <input type="hidden" id="_method" name="_method" value="put" />
                 <input type="submit" name="modifierProfile" value="Modifier" />

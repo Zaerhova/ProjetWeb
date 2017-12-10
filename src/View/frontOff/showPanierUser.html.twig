@@ -1,7 +1,6 @@
 {% extends "layout.html.twig" %}
 {% block contenu %}
-    <h1>Projet 2 web : site de vente Espace Client</h1>
-    
+    <div><br></div>
     <div class="row">
         <div class="small-6 large-6 columns">
             <table>
@@ -53,10 +52,25 @@
                     {% endfor %}
             </tbody>
             </table>
+            <div>
             {% if dataPanier|length != compteur %}
-                <form action="{{ path('commande.add') }}" method="get">
+                <form action="{{ path('commande.add') }}" method="get" class="right">
                     <input type="image" style="width:40px;height:40px;" src="{{ asset('images/validerCommande.png') }}" alt="valider Commande">
                 </form>
+                <table>
+                    <tbody>
+                        <thread>
+                            <tr><th>PrixTotal</th></tr>
+                        </thread>
+                        {% set prixTotal = 0 %}
+                        {% for panier in dataPanier if panier.commande_id == null %}
+                            {% set prixTotal = prixTotal + panier.prix*panier.quantite %}
+                        {% endfor %}
+                        <td>{{ prixTotal }}</td>
+                    </tbody>
+                </table>
+
+            </div>
             {% endif %}
         </div>
     </div>

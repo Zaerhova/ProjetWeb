@@ -15,6 +15,7 @@
         "symfony/form": "^3.3",
         "symfony/config": "^3.3",
         "symfony/translation": "^3.3",
-        "symfony/var-dumper": "^3.3"
+        "symfony/var-dumper": "^3.3",
+        "Gregwar/Captcha": "^1.1"
     }
 }

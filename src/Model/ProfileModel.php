@@ -68,16 +68,4 @@ class ProfileModel
         return $queryBuilder->execute();
     }
 
-    public function updatePassword($donnees)
-    {
-        $queryBuilder = new QueryBuilder($this->db);
-        $queryBuilder->update('users')
-            ->set('motdepasse','?')
-            ->where('id = ?')
-            ->setParameter(0,$donnees['motdepasse'])
-            ->setParameter(1,$donnees['id']);
-        return $queryBuilder->execute();
-    }
-
-
 }

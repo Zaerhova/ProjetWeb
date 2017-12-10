@@ -57,8 +57,56 @@ $app->before(function (\Symfony\Component\HttpFoundation\Request $request) use (
             return $app->redirect($app["url_generator"]->generate("index.errorDroit"));
         }
     }
-
 });
+
+$app->before(function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
+    $nomRoute=$request->get("_route");
+    switch ($nomRoute){
+        case "produit.validFormAddProduit" :
+            if (!isset($_POST["_csrf_token"])){
+                return $app->redirect($app["url_generator"]->generate("index.errorCsrf"));
+            }
+            break;
+        case "produit.validFormDeleteProduit":
+            if (!isset($_POST["_csrf_token"])){
+                return $app->redirect($app["url_generator"]->generate("index.errorCsrf"));
+            }
+            break;
+        case "produit.validFormEditProduit":
+            if (!isset($_POST["_csrf_token"])){
+                return $app->redirect($app["url_generator"]->generate("index.errorCsrf"));
+            }
+            break;
+        case "produit.validFormLogin":
+            if (!isset($_POST["_csrf_token"])){
+                return $app->redirect($app["url_generator"]->generate("index.errorCsrf"));
+            }
+            break;
+        case "profile.validFormRegister":
+            if (!isset($_POST["_csrf_token"])){
+                return $app->redirect($app["url_generator"]->generate("index.errorCsrf"));
+            }
+            break;
+        case "profile.validFormEmail":
+            if (!isset($_POST["_csrf_token"])){
+                return $app->redirect($app["url_generator"]->generate("index.errorCsrf"));
+            }
+            break;
+        case "profile.validFormPseudo":
+            if (!isset($_POST["_csrf_token"])){
+                return $app->redirect($app["url_generator"]->generate("index.errorCsrf"));
+            }
+            break;
+        case "profile.validFormUpdate":
+            if (!isset($_POST["_csrf_token"])){
+                return $app->redirect($app["url_generator"]->generate("index.errorCsrf"));
+            }
+            break;
+
+
+    }
+});
+
 
 
 // par défaut les méthodes DELETE PUT ne sont pas prises en compte
