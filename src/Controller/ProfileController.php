@@ -22,9 +22,9 @@ class ProfileController implements ControllerProviderInterface
         return $app['twig']->render("frontOff/mesCoordonnees.html.twig",['user'=>$user]);
     }
 
-    public function updateProfile(Application $app,$id){
+    public function updateProfile(Application $app){
         $this->profileModel = new ProfileModel($app);
-        $user = $this->profileModel->getUser($id);
+        $user = $this->profileModel->getUser($app['session']->get('user_id'));
         return $app['twig']->render("frontOff/v_form_update_profile.html.twig",['user'=>$user]);
     }
 
@@ -59,9 +59,9 @@ class ProfileController implements ControllerProviderInterface
         else return $app["twig"]->render('frontOff/v_form_update_profile.html.twig',['user'=> $donnees,'erreurs'=>$erreurs]);
     }
 
-    public function updatePseudo(Application $app, $id){
+    public function updatePseudo(Application $app){
         $this->profileModel = new ProfileModel($app);
-        $user = $this->profileModel->getUser($id);
+        $user = $this->profileModel->getUser($app['session']->get('user_id'));
         return $app['twig']->render("frontOff/v_form_update_pseudo.html.twig",["user" => $user]);
     }
 
@@ -80,9 +80,9 @@ class ProfileController implements ControllerProviderInterface
         else return $app['twig']->render("frontOff/v_form_update_pseudo.html.twig",['user' => $donnees , 'erreurs' => $erreurs]);
     }
 
-    public function updateEmail(Application $app, $id){
+    public function updateEmail(Application $app){
         $this->profileModel = new ProfileModel($app);
-        $user = $this->profileModel->getUser($id);
+        $user = $this->profileModel->getUser($app['session']->get('user_id'));
         return $app['twig']->render("frontOff/v_form_update_email.html.twig",['user' => $user]);
     }
 
@@ -101,9 +101,9 @@ class ProfileController implements ControllerProviderInterface
         else return $app['twig']->render("frontOff/v_form_update_email.html.twig",['user' => $donnees , 'erreurs' => $erreurs]);
     }
 
-    public function updatePassword(Application $app, $id){
+    public function updatePassword(Application $app){
         $this->profileModel = new ProfileModel($app);
-        $user = $this->profileModel->getUser($id);
+        $user = $this->profileModel->getUser($app['session']->get('user_id'));
         return $app['twig']->render("frontOff/v_form_update_password.html.twig",['user' => $user]);
     }
 
@@ -126,13 +126,13 @@ class ProfileController implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
         $controllers->match("/", 'App\Controller\ProfileController::index')->bind('profile.index');
         $controllers->get("/profile", 'App\Controller\ProfileController::showProfile')->bind('profile.showProfile');
-        $controllers->get("/updatePerso/{id}",'App\Controller\ProfileController::updateProfile')->bind('profile.updatePerso')->assert('id', '\d+');
+        $controllers->get("/updatePerso",'App\Controller\ProfileController::updateProfile')->bind('profile.updatePerso');
         $controllers->put("/update",'App\Controller\ProfileController::validFormUpdate')->bind('profile.validFormUpdate');
-        $controllers->get("/updatePseudo/{id}",'App\Controller\ProfileController::updatePseudo')->bind('profile.updatePseudo')->assert('id','\d+');
+        $controllers->get("/updatePseudo",'App\Controller\ProfileController::updatePseudo')->bind('profile.updatePseudo');
         $controllers->put("/updatePseudo",'App\Controller\ProfileController::validFormPseudo')->bind('profile.validFormPseudo');
-        $controllers->get("/updateEmail/{id}",'App\Controller\ProfileController::updateEmail')->bind('profile.updateEmail')->assert('id','\d+');
+        $controllers->get("/updateEmail",'App\Controller\ProfileController::updateEmail')->bind('profile.updateEmail');
         $controllers->put("/updateEmail",'App\Controller\ProfileController::validFormEmail')->bind('profile.validFormEmail');
-        $controllers->get("/updatePassword/{id}",'App\Controller\ProfileController::updatePassword')->bind('profile.updatePassword')->assert('id','\d+');
+        $controllers->get("/updatePassword",'App\Controller\ProfileController::updatePassword')->bind('profile.updatePassword');
         $controllers->put("/updatePassword",'App\Controller\ProfileController::validFormPassword')->bind('profile.validFormPassword');
 
         return $controllers;

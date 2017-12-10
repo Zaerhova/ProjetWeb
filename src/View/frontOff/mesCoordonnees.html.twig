@@ -17,28 +17,25 @@
             <div style="border: 0.1px #7DA0B1;border-top-style: solid;border-bottom-style: solid;width: 70%;">
                 <strong>Adresse</strong> : {{ user.adresse }}
             </div>
-            <a href="{{ path('profile.updatePerso',{id : user.id }) }}">Modifier</a>
+            <a href="{{ path('profile.updatePerso') }}">Modifier</a>
         </div>
         <div style="border: 3px #7DA0B1;border-top-style: solid;width: 100%;">
             <h4>Information du compte : </h4>
             <div style="border: 0.1px #7DA0B1;border-top-style: solid;width: 70%;">
                 <strong>Pseudo </strong> : {{ user.username }}
-                <form action="{{ path('profile.updatePseudo',{id : user.id}) }}" style="display: inline-block;">
-                    <input type="hidden" name="id" value="{{ user.id }}">
+                <form action="{{ path('profile.updatePseudo') }}" style="display: inline-block;">
                     <input type="image" src="{{ asset('images/modifier.jpg') }}"  style="width: 25px; height: 25px; position: relative; left:100%;" alt="modifier">
                 </form>
             </div>
             <div style="border: 0.1px #7DA0B1;border-top-style: solid;width: 70%;">
                 <strong>Email </strong> : {{ user.email }}
-                <form action="{{ path('profile.updateEmail',{id : user.id}) }}" style="display: inline-block;">
-                    <input type="hidden" name="email" value="{{ user.id }}">
+                <form action="{{ path('profile.updateEmail') }}" style="display: inline-block;">
                     <input type="image" src="{{ asset('images/modifier.jpg') }}"  style="width: 25px; height: 25px; position: relative; left:100%;" alt="modifier">
                 </form>
             </div>
             <div style="border: 0.1px #7DA0B1;border-top-style: solid;border-bottom-style: solid;width: 70%;">
                 <strong>Mot de passe </strong> : {{ user.motdepasse }}
-                <form action="{{ path('profile.updatePassword',{id : user.id}) }}" style="display: inline-block;">
-                    <input type="hidden" name="password" value="{{ user.id }}">
+                <form action="{{ path('profile.updatePassword') }}" style="display: inline-block;">
                     <input type="image" src="{{ asset('images/modifier.jpg') }}"  style="width: 25px; height: 25px; position: relative; left:100%;" alt="modifier">
                 </form>
             </div>
