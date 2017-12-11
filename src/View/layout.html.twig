@@ -16,15 +16,17 @@
 {% elseif   app.session.get('roles') is defined and  app.session.get('roles') == 'ROLE_CLIENT' %}
   {% include "nav_frontOff.html.twig" %}
 {% else %}
+    {% include "nav_home.html.twig" %}
+{% endif%}
 {% block contenu %}
 Site de vente projet S3 web IUT
 {% endblock %}
 
 <script src="{{ asset('assets/js/vendor/jquery.js') }}"></script>
 <script src="{{ asset('assets/js/foundation.min.js') }}"></script>
+
 <script>
-    {% include "nav_home.html.twig" %}
-    {% endif%}
+
 
     $(document).foundation();
 </script>

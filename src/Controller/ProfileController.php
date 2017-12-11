@@ -101,6 +101,27 @@ class ProfileController implements ControllerProviderInterface
         else return $app['twig']->render("frontOff/v_form_update_email.html.twig",['user' => $donnees , 'erreurs' => $erreurs]);
     }
 
+    public function updateMDP(Application $app){
+        $this->profileModel = new ProfileModel($app);
+        $user = $this->profileModel->getUser($app['session']->get('user_id'));
+        return $app['twig']->render("frontOff/v_form_update_password.html.twig",['user' => $user]);
+    }
+
+    public function validFormMDP(Application $app){
+        $donnees = [
+            'email' => htmlspecialchars($_POST['email']),
+            'id' => $_POST['id'],
+        ];
+        if (! preg_match("/[A-Za-z0-9]{2,}.(@).[A-Za-z0-9]{2,}.(fr|com|de)/",$donnees['email'])) $erreurs['email']='mail faux (exemple.exemple@exemple.fr ou com)';
+        if(empty($erreurs)){
+            $this->profileModel = new ProfileModel($app);
+            $this->profileModel->updateEmail($donnees);
+            return $app->redirect($app["url_generator"]->generate('profile.index'));
+
+        }
+        else return $app['twig']->render("frontOff/v_form_update_email.html.twig",['user' => $donnees , 'erreurs' => $erreurs]);
+    }
+
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
@@ -112,7 +133,8 @@ class ProfileController implements ControllerProviderInterface
         $controllers->put("/updatePseudo",'App\Controller\ProfileController::validFormPseudo')->bind('profile.validFormPseudo');
         $controllers->get("/updateEmail",'App\Controller\ProfileController::updateEmail')->bind('profile.updateEmail');
         $controllers->put("/updateEmail",'App\Controller\ProfileController::validFormEmail')->bind('profile.validFormEmail');
-
+        $controllers->get("/updatePassword",'App\Controller\ProfileController::updateMDP')->bind('profile.updateMDP');
+        $controllers->put("/updatePassword",'App\Controller\ProfileController::validFormMDP')->bind('profile.validFormMDP');
         return $controllers;
     }
 

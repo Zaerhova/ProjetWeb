@@ -21,11 +21,6 @@
             <li><a href="{{ path('produit.showProduits') }}">afficher/editer/supprimer les produits</a></li>
           </ul>
         </li>
-        <li class="has-dropdown"><a href="#">clients</a>
-          <ul class="dropdown">
-            <li><a href="#"> gestion des clients </a></li>
-          </ul>
-        </li>
       </ul>
         <ul class="right">
             {% if   app.session.get('logged') is defined and  app.session.get('logged') == 1 %}

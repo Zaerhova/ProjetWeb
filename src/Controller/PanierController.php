@@ -28,7 +28,8 @@ class PanierController implements ControllerProviderInterface
     public function showPanier(Application $app) {
         $this->panierModel = new PanierModel($app);
         $this->produitModel = new ProduitModel($app);
-        $paniers = $this->panierModel->getAllPaniers();
+        $userId = $app['session']->get('user_id');
+        $paniers = $this->panierModel->getPaniers($userId);
         $produits = $this->produitModel->getAllProduits();
         return $app["twig"]->render('frontOff/showPanierUser.html.twig',['dataProduit'=>$produits,'dataPanier'=>$paniers]);
     }
@@ -40,7 +41,7 @@ class PanierController implements ControllerProviderInterface
         $donnees['user_id'] = $app['session']->get('user_id');
         $donnees['dateAjoutPanier'] = date('y-m-d h:m:s');
         $this->panierModel = new PanierModel($app);
-        $paniers = $this->panierModel->getAllPaniers();
+        $paniers = $this->panierModel->getPaniers($donnees['user_id']);
         if (empty($paniers)){
             $this->panierModel->addPanier($donnees);
         }else {

@@ -23,6 +23,17 @@ class PanierModel {
         return $queryBuilder->execute()->fetchAll();
     }
 
+    public function getPaniers($userId){
+
+        $queryBuilder = new QueryBuilder($this->db);
+        $queryBuilder
+            ->select('pa.id','pa.quantite','pa.prix','pa.dateAjoutPanier','pa.user_id','pa.produit_id','pa.commande_id')
+            ->from('paniers','pa')
+            ->where('pa.user_id='.$userId)
+            ->orderBy('pa.quantite','DESC');
+        return $queryBuilder->execute()->fetchAll();
+    }
+
 
 
     public function getPanier($id){
